@@ -12,15 +12,16 @@ module.exports = app => {
         res.sendFile(path.join(__dirname, '../public/index.html'))
     );
 //reads db.json and declares data as notes variable
-    fs.readFile("db/db.json", "utf8", (err, data) => {
-       if (err) throw err;
-       var notes = JSON.parse(data);
 
-       app.get('/api/notes', function(req, res){
-        res.json(notes);
-       })
+//reads db and returns notes
+    app.get('/api/notes', (req, res) => {
+        fs.readFile("db/db.json", "utf8", (err, data) => {
+            if (err) throw err;
+            var notes = JSON.parse(data);
+             res.json(notes);
+         });
     });
-//
+// postcreation
     app.post('/api/notes', (req, res) => {
         
         console.info(`${req.method} request received.`);
@@ -41,10 +42,10 @@ module.exports = app => {
                         parsedNotes.push(newNote);
 
                     fs.writeFile(
-                        'db/db.json',
+                     'db/db.json',
                         JSON.stringify(parsedNotes),
                         (writeErr) =>
-                        writeErr
+                            writeErr
                             ? console.error(writeErr)
                             : console.info('Succesfully created Note')
                     )
@@ -59,7 +60,7 @@ module.exports = app => {
             console.log(response);
             res.status(201).json(response);
             } else {
-                res.status(500).json('Error in posting review');
+                res.status(500).json('Error in posting!');
             }
         });
 
