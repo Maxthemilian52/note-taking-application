@@ -11,8 +11,6 @@ module.exports = app => {
     app.get('/', (req, res) => 
         res.sendFile(path.join(__dirname, '../public/index.html'))
     );
-//reads db.json and declares data as notes variable
-
 //reads db and returns notes
     app.get('/api/notes', (req, res) => {
         fs.readFile("db/db.json", "utf8", (err, data) => {
